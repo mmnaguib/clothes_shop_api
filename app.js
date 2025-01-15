@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // اتصال بـ MongoDB
-mongoose.connect("mongodb://localhost:27017/myDatabase", {
+mongoose.connect("mongodb+srv://mnaguib126:wnHrp8fTBoLDaFcZ@cluster0.8asy5.mongodb.net/clothesShopDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
