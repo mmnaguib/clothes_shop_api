@@ -10,12 +10,14 @@ const invoiceSchema = new mongoose.Schema({
         required: true,
       },
       title: { type: String, required: true },
-      quantity: { type: Number, required: true },
-      price: { type: Number, required: true },
-      total: { type: Number, required: true },
+      size: { type: String, required: true }, // المقاس
+      color: { type: String, required: true }, // اللون
+      quantity: { type: Number, required: true }, // الكمية المطلوبة
+      price: { type: Number, required: true }, // سعر الوحدة
+      total: { type: Number, required: true }, // الإجمالي لهذا المنتج
     },
   ],
-  totalAmount: { type: Number, required: true },
+  totalAmount: { type: Number, required: true }, // الإجمالي الكامل للفاتورة
   createdAt: { type: Date, default: Date.now },
 });
 

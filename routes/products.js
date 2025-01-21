@@ -160,8 +160,7 @@ router.get("/:id", async (req, res) => {
  */
 router.post("/", upload.single("image"), async (req, res) => {
   try {
-    const { title, description, price, quantity, categoryId, colorId, sizeId } =
-      req.body;
+    const { title, description, price, stock, categoryId } = req.body;
 
     // تحقق من وجود الصورة
     if (!req.file) {
@@ -173,10 +172,8 @@ router.post("/", upload.single("image"), async (req, res) => {
       title,
       description,
       price,
-      quantity,
       categoryId,
-      colorId: JSON.parse(colorId), // تحويل النصوص إلى JSON
-      sizeId: JSON.parse(sizeId),
+      stock: JSON.parse(stock),
       image: req.file.path,
     });
 

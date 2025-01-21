@@ -197,11 +197,11 @@ router.get("/:id", async (req, res) => {
  *                       format: date-time
  *       500:
  *         description: Internal server error.
- */
-router.post("/", async (req, res) => {
+ */ router.post("/", async (req, res) => {
   try {
     const { customerName, products, totalAmount } = req.body;
 
+    // إنشاء الفاتورة
     const invoice = new Invoice({
       customerName,
       products,
@@ -210,19 +210,43 @@ router.post("/", async (req, res) => {
 
     await invoice.save();
 
-    // تحديث كميات المنتجات
+    // تحديث كميات المنتجات في المخزون بناءً على اللون والمقاس
     for (const product of products) {
-      await Product.findByIdAndUpdate(
-        product.productId,
-        { $inc: { quantity: -product.quantity } }, // إنقاص الكمية
-        { new: true }
-      );
+      const dbProduct = await Product.findById(product.productId);
+
+      if (!dbProduct) {
+        return res.status(404).send({ message: "Product not found" });
+      }
+
+      // تحديث المخزون
+      const updatedStock = dbProduct.stock.map((stockItem) => {
+        if (
+          stockItem.size === product.size &&
+          stockItem.color === product.color
+        ) {
+          if (stockItem.quantity < product.quantity) {
+            throw new Error(
+              `Insufficient stock for product ${product.title}, size: ${product.size}, color: ${product.color}`
+            );
+          }
+
+          return {
+            ...stockItem,
+            quantity: stockItem.quantity - product.quantity,
+          };
+        }
+        return stockItem;
+      });
+
+      // تحديث المنتج في قاعدة البيانات
+      dbProduct.stock = updatedStock;
+      await dbProduct.save();
     }
 
     res.status(201).send({ message: "Invoice saved successfully", invoice });
   } catch (error) {
     console.error("Error saving invoice:", error);
-    res.status(500).send({ message: "Internal server error" });
+    res.status(500).send({ message: error.message || "Internal server error" });
   }
 });
 
