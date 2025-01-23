@@ -43,6 +43,40 @@ router.get("/", async (req, res) => {
 
 /**
  * @swagger
+ * /categories/count:
+ *   get:
+ *     summary: Get total number of categories
+ *     description: Returns the total count of categories in the database.
+ *     tags: [Categories]
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the total number of categories.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 totalCategories:
+ *                   type: integer
+ *                   example: 42
+ *       500:
+ *         description: Error occurred while fetching the count.
+ */
+
+router.get("/count", async (req, res) => {
+  try {
+    const totalCategories = await Category.countDocuments({});
+    res.status(200).json({ totalCategories });
+  } catch (error) {
+    console.error("Error fetching total Categories count:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while counting Categories." });
+  }
+});
+
+/**
+ * @swagger
  * /categories:
  *   post:
  *     summary: Add a new category

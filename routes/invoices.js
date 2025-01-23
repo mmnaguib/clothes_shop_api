@@ -57,7 +57,7 @@ router.get("/", async (req, res) => {
     const invoices = await Invoice.find();
     res.status(200).send({ invoices });
   } catch (error) {
-    console.error("Error fetching invoices:", error);
+    toast.error("Error fetching invoices:", error);
     res.status(500).send({ message: "Internal server error" });
   }
 });
@@ -121,7 +121,7 @@ router.get("/:id", async (req, res) => {
 
     res.status(200).send({ invoice });
   } catch (error) {
-    console.error("Error fetching invoice by ID:", error);
+    toast.error("Error fetching invoice by ID:", error);
     res.status(500).send({ message: "Internal server error" });
   }
 });
@@ -245,7 +245,7 @@ router.get("/:id", async (req, res) => {
 
     res.status(201).send({ message: "Invoice saved successfully", invoice });
   } catch (error) {
-    console.error("Error saving invoice:", error);
+    toast.error("Error saving invoice:", error);
     res.status(500).send({ message: error.message || "Internal server error" });
   }
 });

@@ -17,7 +17,7 @@ const productSchema = new mongoose.Schema({
     ref: "Category",
     required: true,
   },
-  image: { type: String, required: true },
+  image: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

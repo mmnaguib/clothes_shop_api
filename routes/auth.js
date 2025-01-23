@@ -83,7 +83,7 @@ router.post("/login", async (req, res) => {
 
     res.status(200).send({ message: "Login successful", token });
   } catch (error) {
-    console.error("Error during login:", error);
+    toast.error("Error during login:", error);
     res.status(500).send({ message: "Internal server error", error });
   }
 });
@@ -150,7 +150,7 @@ router.post("/register", async (req, res) => {
     await newUser.save();
     res.status(201).send({ message: "User registered successfully" });
   } catch (error) {
-    console.error("Error during registration:", error);
+    toast.error("Error during registration:", error);
     res.status(500).send({ message: "Internal server error", error });
   }
 });
