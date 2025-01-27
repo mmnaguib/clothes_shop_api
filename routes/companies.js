@@ -62,7 +62,7 @@ router.get("/", async (req, res) => {
     const companies = await Company.find();
     res.status(200).send({ companies });
   } catch (error) {
-    toast.error("Error fetching companies:", error);
+    console.error("Error fetching companies:", error);
     res.status(500).send({ message: "Internal server error", error });
   }
 });
@@ -115,7 +115,7 @@ router.get("/:id", async (req, res) => {
     }
     res.status(200).send({ company });
   } catch (error) {
-    toast.error("Error fetching company:", error);
+    console.error("Error fetching company:", error);
     res.status(500).send({ message: "Internal server error", error });
   }
 });
